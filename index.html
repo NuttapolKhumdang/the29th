@@ -12,10 +12,16 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/src/meta/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/src/meta/favicon-16x16.png">
     <link rel="manifest" href="/src/meta/site.webmanifest">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js" crossorigin="anonymous"
+        referrerpolicy="no-referrer"></script>
+    <!-- integrity="sha512-hUhvpC5f8cgc04OZb55j0KNGh4eh7dLxd/dPSJ5VyzqDWxsayYbojWyl5Tkcgrmb/RVKCRJI1jNlRbVP4WWC4w==" -->
+    <!-- <script src="https://raw.githubusercontent.com/mckamey/countdownjs/master/countdown.min.js"></script> -->
+    <!-- <script src="https://cdn.rawgit.com/hilios/jQuery.countdown/2.2.0/dist/jquery.countdown.min.js"></script> -->
 </head>
 
 <body class="overflow-x-hidden">
-    <section class="sticky top-0 left-0 h-screen w-screen flex flex-col items-center justify-center">
+    <section class="sticky top-0 left-0 h-screen w-screen flex flex-col items-center justify-center" id="display">
         <video id="animate-video" autoplay loop muted
             class="w-1/2 h-1/2 aspect-square object-contain object-center duration-1000"></video>
         <p id="animate-text"></p>
@@ -139,6 +145,55 @@
     </script>
 
 
+    <main class="fixed top-0 left-0 z-20 w-screen h-screen bg-white flex items-center justify-center"
+        id="countdown-container">
+
+        <header>
+            <p>น้องออมสินจะครบ 18 ปีในอีก</p>
+            <p class="text-4xl" id="countdown"></p>
+        </header>
+    </main>
+
+    <script>
+        const cdt = document.getElementById("cdt");
+
+        const display = document.getElementById("display");
+        display.classList.add('hidden');
+
+        function startCountdown() {
+            // Set the target date
+            const targetDate = new Date("December 29, 2024 00:00:00").getTime();
+
+            // Update the countdown every second
+            const countdownInterval = setInterval(function () {
+                // Get the current time
+                const now = new Date().getTime();
+
+                // Calculate the remaining time
+                const remainingTime = targetDate - now;
+
+                // Calculate hours, minutes, and seconds
+                const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+
+                // Display the result in the format "Hour:Minute:Second"
+                document.getElementById("countdown").innerHTML =
+                    hours.toString().padStart(2, '0') + " ชั่วโมง " +
+                    minutes.toString().padStart(2, '0') + " นาที " +
+                    seconds.toString().padStart(2, '0') + " วินาที";
+
+                // If the countdown is finished, display "EXPIRED"
+                if (remainingTime < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById("countdown-container").remove();
+        display.classList.remove('hidden');
+                }
+            }, 500);
+        }
+
+        startCountdown();
+    </script>
 </body>
 
 </html>

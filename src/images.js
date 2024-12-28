@@ -32,14 +32,6 @@ const images = [
         label: "แม้วๆๆ",
     },
     {
-        img: "09.jpg",
-        label: "",
-    },
-    {
-        img: "10.jpg",
-        label: "",
-    },
-    {
         img: "11.jpg",
         label: "น่าร้ากก",
     },
