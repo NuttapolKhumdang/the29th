@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The 29th</title>
+
+    <link rel="stylesheet" href="./style.css">
+</head>
+
+<body class="overflow-x-hidden">
+    <section class="sticky top-0 left-0 h-screen w-screen flex flex-col items-center justify-center">
+        <video id="animate-video" autoplay loop muted
+            class="w-1/2 h-1/2 aspect-square object-contain object-center duration-1000"></video>
+        <p id="animate-text"></p>
+        <button class="text-xl" id="animate-button"></button>
+    </section>
+
+    <main id="img-table" class="z-40 relative hidden w-full">
+        <section
+            class="w-full flex flex-col items-center justify-center h-screen bg-white *:text-center *:leading-relaxed *:w-2/3">
+            <h1 class="text-4xl">สุขสันต์วันเกิด 18 ปีของน้องออมสิน</h1>
+            <p class="text-xl">วันเกิดผ่านไปอีกปีที่เราได้อยู่ด้วยกันน อุอิอุอิ</p>
+            <p class="text-xl">ในวันคล้ายวันเกิดปีนี้ก็ขอให้สุขภาพแข็งแรงดี มีความสุขในชีวิตเยอะๆ</p>
+            <p class="text-xl">ใช้ชีวิตให้เต็มที่ จะได้เป็นสาวมหาลัยแล้วสิ</p>
+            <p class="text-xl">18 ปีผ่านแล้วและยังมีเวลาให้เติบโตขึ้นอีกเยอะเลย</p>
+            <p class="text-xl">อยากจาอยู่กับเธอต่อไปอีกทุกปีเลยน้าา</p>
+            <p class="text-xl">แฮปปี้เบิร์ดเดย์ค้าบผม</p>
+            <br>
+            <button onclick="animated.next();destroy_image()">แตะ</button>
+        </section>
+    </main>
+
+    <script>
+        function destroy_image() {
+            animate_image.remove();
+        }
+    </script>
+    <script>
+        const animate_scripts = [
+            {
+                label: 'เปิดกล่อง',
+                media: { path: "/src/media/01.mp4", length: 1 }
+            },
+            {
+                label: 'เอ่ะๆ เปิดไม่ออก',
+                media: { path: "/src/media/02.mp4", length: 1 }
+            },
+            {
+                media: { path: "/src/media/03.mp4", length: 2, continue: true }
+            },
+            {
+                label: 'เป่าเทียน',
+                media: { path: "/src/media/04.mp4", length: 1 }
+            },
+            {
+                media: { path: "/src/media/05.mp4", length: 2, continue: true }
+            },
+            {
+                options: {
+                    img: true,
+                },
+                media: { path: "/src/media/06.mp4", length: 2 },
+            },
+            {
+                media: { path: "/src/media/07.mp4", length: 2, continue: true }
+            },
+            {
+                media: { path: "/src/media/08.mp4", length: 5 }
+            },
+        ];
+
+        const animate_video = document.getElementById('animate-video');
+        const animate_button = document.getElementById('animate-button');
+        const animate_text = document.getElementById("animate-text");
+
+        const animate_image = document.getElementById('img-table');
+
+        class Animate {
+            constructor(
+                animate,
+                animate_video = document.getElementById('video'),
+                animate_action = document.getElementById('button'),
+                animate_text = document.getElementById('text'),
+                animate_image = document.getElementById('images'),
+            ) {
+                this.animate = animate;
+                this.action = animate_action;
+                this.video = animate_video;
+                this.text = animate_text;
+                this.image = animate_image;
+
+                this.index = -1;
+
+                this.action.onclick = () => this.next();
+                this.next();
+            }
+
+            next() {
+                const index = ++this.index;
+                this.video.src = this.animate[index].media.path;
+                this.action.innerHTML = this.animate[index].label ?? '';
+
+                if (this.animate[index].media?.continue) {
+                    let changed = false;
+                    this.video.addEventListener("waiting", () => {
+                        if (!changed) this.next();
+                        changed = true;
+                    })
+                }
+
+                if (this.animate[index]?.options?.img) {
+                    this.image.classList.remove('hidden');
+                }
+            }
+        }
+
+        const animated = new Animate(animate_scripts, animate_video, animate_button, animate_text, animate_image);
+    </script>
+
+    <script src="/src/images.js"></script>
+    <script>
+        const imgs = images.map((f, i) =>  /*html*/`<div class="flex flex-col items-center justify-center">
+            <img src="/src/images/${f.img}" class="object-cover aspect-square">
+            <p class="text-lg py-2">${f.label ?? ''}</p>
+        </div>`);
+
+        let r = ''
+        for (let i = 0; i < imgs.length; i += 2) {
+            r += /*html*/`<section class="grid grid-cols-3 h-screen place-items-center">${imgs[i]}<div></div>${imgs[i + 1]}</section>`;
+        }
+        animate_image.insertAdjacentHTML("afterbegin", r);
+    </script>
+
+
+</body>
+
+</html>
