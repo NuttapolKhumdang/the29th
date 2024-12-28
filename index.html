@@ -148,18 +148,13 @@
     <main class="fixed top-0 left-0 z-20 w-screen h-screen bg-white flex items-center justify-center"
         id="countdown-container">
 
-        <header>
+        <header class="px-16">
             <p>น้องออมสินจะครบ 18 ปีในอีก</p>
             <p class="text-4xl" id="countdown"></p>
         </header>
     </main>
 
     <script>
-        const cdt = document.getElementById("cdt");
-
-        const display = document.getElementById("display");
-        display.classList.add('hidden');
-
         function startCountdown() {
             // Set the target date
             const targetDate = new Date("December 29, 2024 00:00:00").getTime();
@@ -183,16 +178,25 @@
                     minutes.toString().padStart(2, '0') + " นาที " +
                     seconds.toString().padStart(2, '0') + " วินาที";
 
-                // If the countdown is finished, display "EXPIRED"
                 if (remainingTime < 0) {
+                    window.location.reload();
                     clearInterval(countdownInterval);
                     document.getElementById("countdown-container").remove();
-        display.classList.remove('hidden');
+                } else {
+                    if (document.getElementById("display")) document.getElementById("display").remove();
                 }
             }, 500);
         }
 
-        startCountdown();
+        const targetDate = new Date("December 29, 2024 00:00:00").getTime();
+        const now = new Date().getTime();
+        const remainingTime = targetDate - now;
+
+        if (remainingTime < 0) {
+            document.getElementById("countdown-container").remove();
+        } else {
+            startCountdown();
+        }
     </script>
 </body>
 
