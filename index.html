@@ -155,17 +155,19 @@
     </main>
 
     <script>
+        const tDateString = "December 29, 2024 07:00:00";
+
+        function diffDate() {
+            const targetDate = new Date(tDateString).getTime();
+            const now = new Date().getTime();
+            const remainingTime = targetDate - now;
+            return remainingTime;
+        }
+
         function startCountdown() {
-            // Set the target date
-            const targetDate = new Date("December 29, 2024 00:00:00").getTime();
-
-            // Update the countdown every second
             const countdownInterval = setInterval(function () {
-                // Get the current time
-                const now = new Date().getTime();
-
                 // Calculate the remaining time
-                const remainingTime = targetDate - now;
+                const remainingTime = diffDate();
 
                 // Calculate hours, minutes, and seconds
                 const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -188,11 +190,7 @@
             }, 500);
         }
 
-        const targetDate = new Date("December 29, 2024 00:00:00").getTime();
-        const now = new Date().getTime();
-        const remainingTime = targetDate - now;
-
-        if (remainingTime < 0) {
+        if (diffDate() < 0) {
             document.getElementById("countdown-container").remove();
         } else {
             startCountdown();
