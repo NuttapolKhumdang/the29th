@@ -114,11 +114,13 @@
                 this.action.innerHTML = this.animate[index].label ?? '';
 
                 if (this.animate[index].media?.continue) {
-                    let changed = false;
-                    this.video.addEventListener("waiting", () => {
-                        if (!changed) this.next();
-                        changed = true;
-                    })
+                    // let changed = false;
+                    // this.video.addEventListener("waiting", () => {
+                    //     if (!changed) this.next();
+                    //     changed = true;
+                    // })
+
+                    setTimeout(()=> this.next(), this.animate[index].media?.length * 1000);
                 }
 
                 if (this.animate[index]?.options?.img) {
